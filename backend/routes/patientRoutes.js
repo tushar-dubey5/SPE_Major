@@ -24,4 +24,17 @@ router.post('/create/appointment', async (req, res) => {
     res.status(500).json({ error: 'Failed to book appointment' });
   }
 });
+
+router.get('/:patientId/reports', async (req, res) => {
+    try {
+      const reports = await Report.find({ patientId: req.params.patientId })
+        .populate('doctorId', 'name email'); // Optional: get doctor details too
+  
+      res.json(reports);
+    } catch (err) {
+      console.error('Error fetching reports:', err);
+      res.status(500).json({ error: 'Failed to fetch reports' });
+    }
+  });
+  
 module.exports = router;
